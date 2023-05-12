@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Searchbar from './Searchbar/Searchbar';
 
 export default class App extends Component {
   render() {
@@ -13,7 +14,7 @@ export default class App extends Component {
           color: '#010101',
         }}
       >
-        App
+        <Searchbar></Searchbar>
       </div>
     );
   }
