@@ -11,8 +11,6 @@ export default class App extends Component {
   };
   handleFormSubmit = imgValue => {
     this.setState({ imgValue });
-
-    pixabayAPI.fetchPhotos();
   };
   render() {
     return (

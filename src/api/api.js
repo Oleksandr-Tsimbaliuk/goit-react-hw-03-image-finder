@@ -16,7 +16,6 @@ export default class PixabayAPI {
     try {
       const data = await axios.get(this.#BASE_URL, {
         params: {
-          q: this,
           query: this.query,
           page: this.page,
           per_page: this.per_page,
