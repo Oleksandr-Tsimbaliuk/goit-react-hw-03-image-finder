@@ -13,6 +13,7 @@ export default class Searchbar extends Component {
   handleSubmit = event => {
     if (this.state.query.trim() === '') {
       alert('Please, enter search value');
+      return;
     }
 
     event.preventDefault();
