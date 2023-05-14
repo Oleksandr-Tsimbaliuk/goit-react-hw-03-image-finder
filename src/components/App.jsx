@@ -8,10 +8,20 @@ const pixabayAPI = new PixabayAPI();
 export default class App extends Component {
   state = {
     imgValue: '',
+    gallery: [],
   };
   handleFormSubmit = imgValue => {
     this.setState({ imgValue });
   };
+
+  async componentDidUpdate(prevProp, prevState) {
+    if (this.state.imgValue !== prevState.imgValue) {
+      const { data } = await pixabayAPI.fetchPhotos();
+      console.log(data);
+      this.setState({ gallery: data.hits });
+    }
+  }
+
   render() {
     return (
       <>
