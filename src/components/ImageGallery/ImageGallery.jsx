@@ -1,11 +1,21 @@
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import React from 'react';
+import { StyledImageGallery } from './Styled.js';
 
-function ImageGallery() {
+function ImageGallery({ gallery }) {
   return (
-    <ul className="gallery">
-      <ImageGalleryItem></ImageGalleryItem>
-    </ul>
+    <StyledImageGallery>
+      {gallery.map(({ id, webformatURL, largeImageURL, tags }) => {
+        return (
+          <ImageGalleryItem
+            key={id}
+            smallImg={webformatURL}
+            largeImg={largeImageURL}
+            tags={tags}
+          ></ImageGalleryItem>
+        );
+      })}
+    </StyledImageGallery>
   );
 }
 

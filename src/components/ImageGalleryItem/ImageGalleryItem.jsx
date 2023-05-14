@@ -1,11 +1,11 @@
 import React from 'react';
+import { StyledImageGalleryItem } from './Styled.js';
 
-function ImageGalleryItem() {
+function ImageGalleryItem({ smallImg, largeImg, tags }) {
   return (
-    <li className="gallery-item">
-      <img src="" alt="" />
-      <p>asd</p>
-    </li>
+    <StyledImageGalleryItem className="gallery-item">
+      <img src={smallImg} alt={tags} />
+    </StyledImageGalleryItem>
   );
 }
 
