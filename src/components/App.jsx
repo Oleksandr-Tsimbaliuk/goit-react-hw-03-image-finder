@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+
 import Searchbar from './Searchbar/Searchbar';
 import { fetchImages } from 'services/api';
 import ImageGallery from './ImageGallery/ImageGallery';
 import { Container } from './App.styled';
+import { Watch } from 'react-loader-spinner';
+import Modal from './Modal/Modal';
 
 export default class App extends Component {
   state = {
@@ -11,17 +14,24 @@ export default class App extends Component {
     gallery: [],
     isLoading: false,
     error: null,
-  };
-
-  handleFormSubmit = query => {
-    this.setState({ query });
+    showModal: true,
   };
 
   componentDidUpdate(prevProp, prevState) {
     if (this.state.query !== prevState.query) {
+      this.setState({ gallery: [] });
       this.searchImages(this.state.query);
     }
   }
+  handleFormSubmit = query => {
+    this.setState({ query });
+  };
+
+  toggleModal = () => {
+    this.setState(state => ({
+      showModal: !state.showModal,
+    }));
+  };
 
   // async componentDidMount() {
   //   const data = await fetchImages();
@@ -50,8 +60,27 @@ export default class App extends Component {
         {this.state.error && (
           <p>Whoops, something went wrong: {this.state.error.message}</p>
         )}
-        {this.state.isLoading && <p>Loading...</p>}
+        {this.state.isLoading && (
+          <Watch
+            height="80"
+            width="80"
+            radius="48"
+            color="#4fa94d"
+            ariaLabel="watch-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={true}
+          />
+        )}
         <ImageGallery gallery={this.state.gallery}></ImageGallery>
+        {this.state.showModal && (
+          <Modal onClose={this.toggleModal}>
+            <button onClick={this.toggleModal} type="button">
+              click
+            </button>
+            <img src="" alt="" />
+          </Modal>
+        )}
       </Container>
     );
   }

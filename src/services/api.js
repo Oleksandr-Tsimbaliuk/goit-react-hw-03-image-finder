@@ -42,7 +42,3 @@ export const fetchImages = async (query, currentPage) => {
     console.log(error.message);
   }
 };
-
-// id - унікальний ідентифікатор
-// webformatURL - посилання на маленьке зображення для списку карток
-// largeImageURL - посилання на велике зображення для модального вікна
