@@ -13,10 +13,7 @@ export const StyledOverlay = styled.div`
   z-index: 1200;
 
   .Modal {
-    width: 400px;
-    height: 250px;
     max-width: calc(100vw - 48px);
     max-height: calc(100vh - 24px);
-    background-color: white;
   }
 `;

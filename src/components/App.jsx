@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 
-import Searchbar from './Searchbar/Searchbar';
 import { fetchImages } from 'services/api';
-import ImageGallery from './ImageGallery/ImageGallery';
 import { Container } from './App.styled';
 import { Watch } from 'react-loader-spinner';
+
+import Searchbar from './Searchbar/Searchbar';
+import ImageGallery from './ImageGallery/ImageGallery';
 import Modal from './Modal/Modal';
+import Button from './Button/Button';
 
 export default class App extends Component {
   state = {
@@ -14,7 +16,9 @@ export default class App extends Component {
     gallery: [],
     isLoading: false,
     error: null,
-    showModal: true,
+    showModal: false,
+    largeImage: '',
+    alt: '',
   };
 
   componentDidUpdate(prevProp, prevState) {
@@ -33,18 +37,18 @@ export default class App extends Component {
     }));
   };
 
-  // async componentDidMount() {
-  //   const data = await fetchImages();
-  //   this.setState({ gallery: data.hits });
-  //   console.log(data.hits);
-  // }
+  handleImageClick = (largeImageURL, tags) => {
+    this.setState({ largeImage: largeImageURL, alt: tags });
+    this.toggleModal();
+  };
+
+  // handleLoadMore = () => {};
 
   searchImages = async (query, currentPage) => {
     this.setState({ isLoading: true });
     try {
       const data = await fetchImages(query, currentPage);
       this.setState({ gallery: data.hits });
-
       console.log(data.hits);
     } catch (error) {
       this.setState({ error });
@@ -54,13 +58,13 @@ export default class App extends Component {
   };
 
   render() {
+    const { largeImage, alt, error, isLoading, gallery, showModal } =
+      this.state;
     return (
       <Container>
         <Searchbar onSubmit={this.handleFormSubmit}></Searchbar>
-        {this.state.error && (
-          <p>Whoops, something went wrong: {this.state.error.message}</p>
-        )}
-        {this.state.isLoading && (
+        {error && <p>Whoops, something went wrong: {error.message}</p>}
+        {isLoading && (
           <Watch
             height="80"
             width="80"
@@ -72,15 +76,18 @@ export default class App extends Component {
             visible={true}
           />
         )}
-        <ImageGallery gallery={this.state.gallery}></ImageGallery>
-        {this.state.showModal && (
+        {!isLoading && (
+          <ImageGallery
+            gallery={gallery}
+            onClick={this.handleImageClick}
+          ></ImageGallery>
+        )}
+        {showModal && (
           <Modal onClose={this.toggleModal}>
-            <button onClick={this.toggleModal} type="button">
-              click
-            </button>
-            <img src="" alt="" />
+            <img src={largeImage} alt={alt} />
           </Modal>
         )}
+        {gallery.length > 0 && <Button onClick={this.handleLoadMore}></Button>}
       </Container>
     );
   }
@@ -129,37 +136,3 @@ export default class App extends Component {
 // };
 // fetchImages().then(data => console.log(data));
 // -----------------------------------------------
-
-// import React, { Component } from 'react';
-// import Searchbar from './Searchbar/Searchbar';
-// import ImageGallery from './ImageGallery/ImageGallery';
-// import PixabayAPI from 'api/api';
-
-// const pixabayAPI = new PixabayAPI();
-
-// export default class App extends Component {
-//   state = {
-//     imgValue: '',
-//     gallery: [],
-//   };
-//   handleFormSubmit = imgValue => {
-//     this.setState({ imgValue });
-//   };
-
-//   async componentDidUpdate(prevProp, prevState) {
-//     if (this.state.imgValue !== prevState.imgValue) {
-//       const { data } = await pixabayAPI.fetchPhotos();
-//       console.log(data);
-//       this.setState({ gallery: data.hits });
-//     }
-//   }
-
-//   render() {
-//     return (
-//       <>
-//         <Searchbar onSubmit={this.handleFormSubmit}></Searchbar>
-//         <ImageGallery></ImageGallery>
-//       </>
-//     );
-//   }
-// }

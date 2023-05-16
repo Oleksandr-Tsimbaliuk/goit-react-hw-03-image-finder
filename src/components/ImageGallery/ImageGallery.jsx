@@ -2,7 +2,7 @@ import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import React from 'react';
 import { StyledImageGallery } from './Styled.js';
 
-function ImageGallery({ gallery }) {
+function ImageGallery({ gallery, onClick }) {
   return (
     <StyledImageGallery>
       {gallery.map(({ id, webformatURL, largeImageURL, tags }) => {
@@ -12,6 +12,7 @@ function ImageGallery({ gallery }) {
             smallImg={webformatURL}
             largeImg={largeImageURL}
             tags={tags}
+            onClick={onClick}
           ></ImageGalleryItem>
         );
       })}
