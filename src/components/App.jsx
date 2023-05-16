@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 
 import { fetchImages } from 'services/api';
 import { Container } from './App.styled';
-import { Watch } from 'react-loader-spinner';
 
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Modal from './Modal/Modal';
 import Button from './Button/Button';
+import Loader from './Loader/Loader';
 
 export default class App extends Component {
   state = {
@@ -64,18 +64,7 @@ export default class App extends Component {
       <Container>
         <Searchbar onSubmit={this.handleFormSubmit}></Searchbar>
         {error && <p>Whoops, something went wrong: {error.message}</p>}
-        {isLoading && (
-          <Watch
-            height="80"
-            width="80"
-            radius="48"
-            color="#4fa94d"
-            ariaLabel="watch-loading"
-            wrapperStyle={{}}
-            wrapperClassName=""
-            visible={true}
-          />
-        )}
+        {isLoading && <Loader></Loader>}
         {!isLoading && (
           <ImageGallery
             gallery={gallery}
