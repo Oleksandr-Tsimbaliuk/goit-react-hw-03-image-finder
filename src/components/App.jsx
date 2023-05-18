@@ -65,7 +65,6 @@ export default class App extends Component {
       this.setState(prevState => ({
         gallery: [...prevState.gallery, ...data.hits],
       }));
-      console.log(data);
       console.log(data.hits);
       this.setState({ totalHits: data.totalHits });
     } catch (error) {

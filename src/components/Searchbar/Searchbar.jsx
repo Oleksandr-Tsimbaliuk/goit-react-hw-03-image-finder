@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyledSearhbar } from './Styled';
+import { ReactComponent as IconSeacrh } from '../../icons/seach-icon.svg';
 
 export default class Searchbar extends Component {
   state = {
@@ -27,7 +28,7 @@ export default class Searchbar extends Component {
       <StyledSearhbar>
         <form onSubmit={this.handleSubmit} className="SearchForm">
           <button type="submit" className="SearchForm-button">
-            <span className="SearchForm-button-label">Search</span>
+            <IconSeacrh className="SearchForm-button-label"></IconSeacrh>
           </button>
 
           <input
