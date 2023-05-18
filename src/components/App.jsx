@@ -21,14 +21,20 @@ export default class App extends Component {
     alt: '',
   };
 
-  componentDidUpdate(prevProp, prevState) {
-    if (this.state.query !== prevState.query) {
-      this.setState({ gallery: [] });
-      this.searchImages(this.state.query);
+  componentDidUpdate(prevProps, prevState) {
+    const nexPage = this.state.currentPage;
+    if (
+      this.state.query !== prevState.query ||
+      this.state.currentPage !== prevState.currentPage
+    ) {
+      // this.setState({ gallery: [] });
+      this.setState({ currentPage: nexPage });
+
+      this.searchImages(this.state.query, this.state.currentPage);
     }
   }
   handleFormSubmit = query => {
-    this.setState({ query });
+    this.setState({ query, currentPage: 1, gallery: [] });
   };
 
   toggleModal = () => {
@@ -42,13 +48,20 @@ export default class App extends Component {
     this.toggleModal();
   };
 
-  // handleLoadMore = () => {};
+  handleLoadMore = () => {
+    this.setState(prevState => {
+      return { currentPage: prevState.currentPage + 1 };
+    });
+  };
 
   searchImages = async (query, currentPage) => {
     this.setState({ isLoading: true });
     try {
       const data = await fetchImages(query, currentPage);
-      this.setState({ gallery: data.hits });
+      // this.setState({ gallery: data.hits });
+      this.setState(prevState => ({
+        gallery: [...prevState.gallery, ...data.hits],
+      }));
       console.log(data.hits);
     } catch (error) {
       this.setState({ error });
@@ -76,7 +89,9 @@ export default class App extends Component {
             <img src={largeImage} alt={alt} />
           </Modal>
         )}
-        {gallery.length > 0 && <Button onClick={this.handleLoadMore}></Button>}
+        {gallery.length > 0 && (
+          <Button handleLoadMore={this.handleLoadMore}></Button>
+        )}
       </Container>
     );
   }
