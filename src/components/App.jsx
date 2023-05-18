@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { fetchImages } from 'services/api';
+import { fetchImages, getPerPageQuantity } from 'services/api';
 import { Container } from './App.styled';
 
 import Searchbar from './Searchbar/Searchbar';
@@ -19,17 +19,14 @@ export default class App extends Component {
     showModal: false,
     largeImage: '',
     alt: '',
+    totalHits: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const nexPage = this.state.currentPage;
     if (
       this.state.query !== prevState.query ||
       this.state.currentPage !== prevState.currentPage
     ) {
-      // this.setState({ gallery: [] });
-      this.setState({ currentPage: nexPage });
-
       this.searchImages(this.state.query, this.state.currentPage);
     }
   }
@@ -54,6 +51,12 @@ export default class App extends Component {
     });
   };
 
+  // showLoadMoreButton = () => {
+  //   if (this.state.totalHits / getPerPageQuantity() > this.state.currentPage) {
+  //     return `Hooray! We found ${this.state.totalHits} images.`;
+  //   }
+  // };
+
   searchImages = async (query, currentPage) => {
     this.setState({ isLoading: true });
     try {
@@ -62,17 +65,31 @@ export default class App extends Component {
       this.setState(prevState => ({
         gallery: [...prevState.gallery, ...data.hits],
       }));
+      console.log(data);
       console.log(data.hits);
+      this.setState({ totalHits: data.totalHits });
     } catch (error) {
       this.setState({ error });
     } finally {
       this.setState({ isLoading: false });
+
+      // this.setState(prevState => ({
+      //   perPageCounter: prevState.perPageCounter + getPerPageQuantity(),
+      // }));
     }
   };
 
   render() {
-    const { largeImage, alt, error, isLoading, gallery, showModal } =
-      this.state;
+    const {
+      largeImage,
+      alt,
+      error,
+      isLoading,
+      gallery,
+      showModal,
+      totalHits,
+      currentPage,
+    } = this.state;
     return (
       <Container>
         <Searchbar onSubmit={this.handleFormSubmit}></Searchbar>
@@ -89,9 +106,10 @@ export default class App extends Component {
             <img src={largeImage} alt={alt} />
           </Modal>
         )}
-        {gallery.length > 0 && (
-          <Button handleLoadMore={this.handleLoadMore}></Button>
-        )}
+        {totalHits / getPerPageQuantity() > currentPage &&
+          gallery.length > 0 && (
+            <Button handleLoadMore={this.handleLoadMore}></Button>
+          )}
       </Container>
     );
   }
