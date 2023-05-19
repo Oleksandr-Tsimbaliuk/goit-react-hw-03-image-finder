@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyledOverlay } from './Styled';
-// import * as basicLightbox from 'basiclightbox';
+import PropTypes from 'prop-types';
 
 export default class Modal extends Component {
   componentDidMount() {
@@ -29,12 +29,9 @@ export default class Modal extends Component {
       </StyledOverlay>
     );
   }
-}
 
-// const instance = basicLightbox.create(
-//   <StyledOverlay>
-//     <div className="Modal">
-//       <img src="" alt="" />
-//     </div>
-//   </StyledOverlay>
-// );
+  static propTypes = {
+    onClick: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+  };
+}

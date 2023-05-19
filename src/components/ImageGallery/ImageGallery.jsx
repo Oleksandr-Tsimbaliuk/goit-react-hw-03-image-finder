@@ -22,7 +22,12 @@ function ImageGallery({ gallery, onClick }) {
 }
 
 ImageGallery.propTypes = {
-  gallery: PropTypes.object.isRequired,
+  gallery: PropTypes.arrayOf({
+    webformatURL: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+  }),
   onClick: PropTypes.func.isRequired,
 };
 
