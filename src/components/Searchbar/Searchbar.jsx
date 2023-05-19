@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyledSearhbar } from './Styled';
 import { ReactComponent as IconSeacrh } from '../../icons/seach-icon.svg';
+import PropTypes from 'prop-types';
 
 export default class Searchbar extends Component {
   state = {
@@ -44,4 +45,7 @@ export default class Searchbar extends Component {
       </StyledSearhbar>
     );
   }
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+  };
 }
